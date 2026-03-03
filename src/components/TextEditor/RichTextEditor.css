@@ -1,0 +1,61 @@
+@reference "../../index.css";
+
+.rich-editor-wrapper {
+  @apply w-full bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden;
+  @apply transition-all duration-200;
+}
+
+.rich-editor-wrapper:focus-within {
+  @apply border-zinc-500;
+}
+
+/* Зона вводу */
+.rich-editor-content {
+  @apply px-4 py-3 min-h-[120px] max-h-[400px] overflow-y-auto;
+}
+
+/* Стилі самого ProseMirror */
+.rich-editor-content .tiptap {
+  @apply text-zinc-100 text-base leading-relaxed outline-none;
+}
+
+/* Placeholder */
+.rich-editor-content .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply text-zinc-600 pointer-events-none float-left h-0;
+}
+
+/* Типографія */
+.rich-editor-content .tiptap h1 {
+  @apply text-2xl font-bold text-zinc-50 mb-2 mt-3;
+}
+
+.rich-editor-content .tiptap h2 {
+  @apply text-xl font-semibold text-zinc-100 mb-2 mt-3;
+}
+
+.rich-editor-content .tiptap p {
+  @apply mb-1;
+}
+
+.rich-editor-content .tiptap strong {
+  @apply font-bold text-zinc-50;
+}
+
+.rich-editor-content .tiptap em {
+  @apply italic;
+}
+
+.rich-editor-content .tiptap u {
+  @apply underline;
+}
+
+.rich-editor-content .tiptap s {
+  @apply line-through text-zinc-400;
+}
+
+/* Фото всередині тексту */
+.rich-editor-content .tiptap img {
+  max-width: 50%;
+  @apply rounded-lg my-2 mx-auto block;
+}
