@@ -4,6 +4,7 @@ import { useCardStore } from "../../store/useCardStore";
 import { CardActions } from "./CardActions";
 import { CardCollapsed } from "./CardCollapsed";
 import { CardExpandedContent } from "./CardExpanded";
+import { CardFull } from "./CardFull";
 
 interface NotionCardProps {
   card: Card;
@@ -41,33 +42,11 @@ export const NotionCard = ({ card }: NotionCardProps) => {
   // --- Full view ---
   if (state === "full") {
     return (
-      <>
-        {/* Overlay */}
-        <div
-          className="fixed inset-0 bg-black/80 z-40 backdrop-blur-sm"
-          onClick={handleClose}
-        />
-
-        {/* Full картка */}
-        <div className="fixed inset-[5%] z-50 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col shadow-2xl">
-          <CardActions onDelete={() => deleteCard(card.id)} onEdit={() => {}} />
-
-          {/* Контент */}
-          <div className="flex-1 overflow-hidden">
-            <CardExpandedContent card={card} />
-          </div>
-
-          {/* Footer */}
-          <div className="shrink-0 border-t border-zinc-800 px-4 py-3 flex justify-end">
-            <button
-              onClick={handleClose}
-              className="px-4 py-2 rounded-lg bg-zinc-800 text-zinc-400 text-sm hover:bg-zinc-700 hover:text-zinc-200 transition-all"
-            >
-              ✕ Close
-            </button>
-          </div>
-        </div>
-      </>
+      <CardFull
+        onClose={handleClose}
+        onDelete={() => deleteCard(card.id)}
+        card={card}
+      />
     );
   }
 

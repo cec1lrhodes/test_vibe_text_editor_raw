@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import type { JSONContent } from "@tiptap/react";
-import type {
-  Card,
-  CardId,
-  CardState,
-  CardUIState,
-} from "../components/Types/typeTiptap";
+import type { Card, CardId, CardState } from "../components/Types/typeTiptap";
 
 interface CardStore {
   // --- Дані карток ---
