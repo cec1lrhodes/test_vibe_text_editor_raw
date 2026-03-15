@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import type { JSONContent } from "@tiptap/react";
 import { RichTextEditor } from "../TextEditor/RichTextEditor";
-import { useCardStore } from "../../store/useCardStore";
+import { useCardStore } from "@/store/useCardStore";
 
 export const InputBar = () => {
   const addCard = useCardStore((s) => s.addCard);

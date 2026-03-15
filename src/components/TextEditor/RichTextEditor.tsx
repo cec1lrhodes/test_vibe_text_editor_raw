@@ -4,7 +4,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { Image } from "@tiptap/extension-image";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import type { JSONContent } from "@tiptap/react";
-import { EditorToolbar } from "../ToolBar/EditorToolbar";
+import { EditorToolbar } from "@/components/ToolBar/EditorToolbar";
 import "./RichTextEditor.css";
 
 interface RichTextEditorProps {

@@ -1,4 +1,4 @@
-import { useCardStore } from "../../store/useCardStore";
+import { useCardStore } from "@/store/useCardStore";
 import { NotionCard } from "./NotionCard";
 
 export const CardsGrid = () => {

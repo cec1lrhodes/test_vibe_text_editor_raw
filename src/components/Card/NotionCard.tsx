@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { Card } from "../Types/typeTiptap";
-import { useCardStore } from "../../store/useCardStore";
+import { useCardStore } from "@/store/useCardStore";
 import { CardActions } from "./CardActions";
 import { CardCollapsed } from "./CardCollapsed";
 import { CardExpandedContent } from "./CardExpanded";
