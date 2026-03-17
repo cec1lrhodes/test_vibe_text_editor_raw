@@ -23,7 +23,7 @@ export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
 
         {/* Контент */}
         <div className="flex-1 overflow-hidden">
-          <CardExpandedContent card={card} />
+          <CardExpandedContent card={card} variant="full" />
         </div>
 
         {/* Footer */}

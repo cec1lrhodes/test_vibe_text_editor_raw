@@ -55,11 +55,11 @@ export const NotionCard = ({ card }: NotionCardProps) => {
     <div
       onClick={handleCardClick}
       className={`
-        group relative bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
-        cursor-pointer transition-all duration-300
-        hover:border-zinc-600 hover:-translate-y-0.5 hover:shadow-xl
-        ${state === "expanded" ? "row-span-2" : ""}
-      `}
+  group relative bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
+  cursor-pointer transition-all duration-300
+  hover:border-zinc-600 hover:-translate-y-0.5 hover:shadow-xl
+  ${state === "expanded" ? "row-span-2" : ""}
+`}
     >
       {state === "collapsed" ? (
         // Collapsed — фіксована висота
@@ -69,7 +69,7 @@ export const NotionCard = ({ card }: NotionCardProps) => {
       ) : (
         // Expanded — більша висота + скрол + кнопка OPEN
         <div className="flex flex-col">
-          <div className="h-[320px] overflow-hidden relative">
+          <div className="h-[320px]  relative">
             <CardActions
               onDelete={() => deleteCard(card.id)}
               onEdit={() => {}}
