@@ -1,11 +1,37 @@
 interface CardActionsProps {
   onDelete: () => void;
   onEdit: () => void;
+  onPublish: () => void;
+  isPublished: boolean;
 }
 
-export const CardActions = ({ onDelete, onEdit }: CardActionsProps) => {
+export const CardActions = ({
+  onDelete,
+  onEdit,
+  isPublished,
+  onPublish,
+}: CardActionsProps) => {
   return (
     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+      {/* Publish */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onPublish();
+        }}
+        className={`w-8 h-8 flex items-center justify-center rounded-lg backdrop-blur-sm transition-all duration-200
+          ${
+            isPublished
+              ? "bg-green-500/20 text-green-400 hover:bg-red-500/20 hover:text-red-400"
+              : "bg-zinc-800/80 text-zinc-400 hover:bg-green-500 hover:text-white"
+          }`}
+        title={isPublished ? "Unpublish" : "Publish"}
+      >
+        {isPublished ? "✓" : "↗"}
+      </button>
+
+      {/* Edit  */}
       <button
         type="button"
         onClick={(e) => {
@@ -17,6 +43,8 @@ export const CardActions = ({ onDelete, onEdit }: CardActionsProps) => {
       >
         ✎
       </button>
+
+      {/* Delete  */}
       <button
         type="button"
         onClick={(e) => {

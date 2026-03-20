@@ -1,19 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Card } from "../Types/typeTiptap";
 import { useCardStore } from "@/store/useCardStore";
 import { CardActions } from "./CardActions";
 import { CardCollapsed } from "./CardCollapsed";
 import { CardExpandedContent } from "./CardExpanded";
 import { CardFull } from "./CardFull";
+import { PublishDialog } from "./PublishDialog";
 
 interface NotionCardProps {
   card: Card;
 }
 
 export const NotionCard = ({ card }: NotionCardProps) => {
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
+  const publishCard = useCardStore((s) => s.publishCard);
+  const unpublishCard = useCardStore((s) => s.unpublishCard);
   const { setCardState, getCardState, deleteCard } = useCardStore();
   const state = getCardState(card.id);
 
+  const startEditing = useCardStore((s) => s.startEditing);
   // Закриваємо full view по Esc
   useEffect(() => {
     if (state !== "full") return;
@@ -50,49 +55,69 @@ export const NotionCard = ({ card }: NotionCardProps) => {
     );
   }
 
+  const handlePublish = (title: string) => {
+    publishCard(card.id, title);
+  };
+
+  const handlePublishClick = () => {
+    if (card.isPublished) {
+      unpublishCard(card.id);
+    } else {
+      setPublishDialogOpen(true);
+    }
+  };
+
   // --- Collapsed + Expanded ---
   return (
-    <div
-      onClick={handleCardClick}
-      className={`
-  group relative bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
-  cursor-pointer transition-all duration-300
-  hover:border-zinc-600 hover:-translate-y-0.5 hover:shadow-xl
-  ${state === "expanded" ? "row-span-2" : ""}
-`}
-    >
-      {state === "collapsed" ? (
-        // Collapsed — фіксована висота
-        <div className="h-[160px]">
-          <CardCollapsed card={card} />
-        </div>
-      ) : (
-        // Expanded — більша висота + скрол + кнопка OPEN
-        <div className="flex flex-col">
-          <div className="h-[320px]  relative">
-            <CardActions
-              onDelete={() => deleteCard(card.id)}
-              onEdit={() => {}}
-            />
-            <CardExpandedContent card={card} />
-          </div>
+    <>
+      <PublishDialog
+        open={publishDialogOpen}
+        onClose={() => setPublishDialogOpen(false)}
+        onConfirm={handlePublish}
+      />
 
-          <div
-            className="border-t border-zinc-800 px-4 py-2 flex justify-between items-center bg-zinc-900"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <span className="text-zinc-600 text-xs">
-              {new Date(card.createdAt).toLocaleDateString()}
-            </span>
-            <button
-              onClick={handleOpen}
-              className="px-3 py-1 rounded-lg bg-zinc-800 text-zinc-400 text-xs hover:bg-zinc-700 hover:text-zinc-200 transition-all"
-            >
-              OPEN ↗
-            </button>
+      <div
+        onClick={handleCardClick}
+        className={`
+        group relative bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
+        cursor-pointer transition-all duration-300
+        hover:border-zinc-600 hover:-translate-y-0.5 hover:shadow-xl
+        ${state === "expanded" ? "row-span-2" : ""}
+      `}
+      >
+        {state === "collapsed" ? (
+          <div className="h-[160px]">
+            <CardCollapsed card={card} />
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="flex flex-col">
+            <div className="relative">
+              <CardActions
+                onDelete={() => deleteCard(card.id)}
+                onEdit={() => startEditing(card.id)}
+                onPublish={handlePublishClick}
+                isPublished={card.isPublished}
+              />
+              <CardExpandedContent card={card} />
+            </div>
+
+            <div
+              className="border-t border-zinc-800 px-4 py-2 flex justify-between items-center bg-zinc-900"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span className="text-zinc-600 text-xs">
+                {new Date(card.createdAt).toLocaleDateString()}
+              </span>
+              <button
+                onClick={handleOpen}
+                className="px-3 py-1 rounded-lg bg-zinc-800 text-zinc-400 text-xs hover:bg-zinc-700 hover:text-zinc-200 transition-all"
+              >
+                OPEN ↗
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };

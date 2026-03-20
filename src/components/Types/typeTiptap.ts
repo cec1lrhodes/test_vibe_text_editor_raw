@@ -8,6 +8,8 @@ export interface Card {
   plainText: string; // Чистий текст — для collapsed картки
   backgroundImage?: string; // Фонове фото картки
   createdAt: number;
+  isPublished: boolean;
+  publishedTitle?: string;
 }
 
 export type CardState = "collapsed" | "expanded" | "full";

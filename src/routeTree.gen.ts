@@ -10,42 +10,42 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NotionRouteImport } from './routes/notion'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesRouteImport } from './routes/articles'
 
 const NotionRoute = NotionRouteImport.update({
   id: '/notion',
   path: '/notion',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
   '/notion': typeof NotionRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
   '/notion': typeof NotionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
   '/notion': typeof NotionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/notion'
+  fullPaths: '/articles' | '/notion'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/notion'
-  id: '__root__' | '/' | '/notion'
+  to: '/articles' | '/notion'
+  id: '__root__' | '/articles' | '/notion'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  ArticlesRoute: typeof ArticlesRoute
   NotionRoute: typeof NotionRoute
 }
 
@@ -58,18 +58,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  ArticlesRoute: ArticlesRoute,
   NotionRoute: NotionRoute,
 }
 export const routeTree = rootRouteImport

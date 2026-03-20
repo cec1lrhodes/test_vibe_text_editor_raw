@@ -1,6 +1,7 @@
 import { CardActions } from "./CardActions";
 import { CardExpandedContent } from "./CardExpanded";
 import type { Card } from "../Types/typeTiptap";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface CardFullProps {
   card: Card;
@@ -10,23 +11,20 @@ interface CardFullProps {
 
 export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
   return (
-    <>
+    <div className="fixed inset-[5%] z-50 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col shadow-2xl h-full">
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/80 z-40 backdrop-blur-sm"
         onClick={onClose}
       />
-
       {/* Full картка */}
       <div className="fixed inset-[5%] z-50 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col shadow-2xl">
         <CardActions onDelete={onDelete} onEdit={() => {}} />
 
-        {/* Контент */}
-        <div className="flex-1 overflow-hidden">
+        <ScrollArea className="flex-1 min-h-0">
           <CardExpandedContent card={card} variant="full" />
-        </div>
+        </ScrollArea>
 
-        {/* Footer */}
         <div className="shrink-0 border-t border-zinc-800 px-4 py-3 flex justify-end">
           <button
             onClick={onClose}
@@ -36,6 +34,6 @@ export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -10,11 +10,13 @@ import "./RichTextEditor.css";
 interface RichTextEditorProps {
   placeholder?: string;
   onChange?: (json: JSONContent, plainText: string) => void;
+  initialContent?: JSONContent;
 }
 
 export const RichTextEditor = ({
   placeholder = "Введіть ваш текст...",
   onChange,
+  initialContent,
 }: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
@@ -34,7 +36,7 @@ export const RichTextEditor = ({
         placeholder,
       }),
     ],
-    content: "",
+    content: initialContent ?? "",
     onUpdate({ editor }) {
       if (!onChange) return;
       const json = editor.getJSON();

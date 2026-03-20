@@ -28,14 +28,15 @@ export const CardExpandedContent = ({
 
   const scrollHeight =
     variant === "full"
-      ? "calc(100vh - 180px)"
+      ? card.backgroundImage
+        ? "calc(100vh - 10% - 140px - 60px)" // vh - inset - фото - footer
+        : "calc(100vh - 10% - 60px)" // vh - inset - footer
       : card.backgroundImage
       ? "180px"
       : "320px";
 
   return (
     <div className="flex flex-col w-full">
-      {/* Фото зверху як header — тільки якщо є */}
       {card.backgroundImage && (
         <div className="w-full h-[140px] shrink-0 overflow-hidden">
           <img
@@ -46,12 +47,21 @@ export const CardExpandedContent = ({
         </div>
       )}
 
-      {/* Текст на чорному фоні */}
-      <ScrollArea className="bg-zinc-900" style={{ height: scrollHeight }}>
+      {variant === "expanded" ? (
+        <ScrollArea
+          className="bg-zinc-900"
+          style={{ height: card.backgroundImage ? "180px" : "320px" }}
+        >
+          <div className="p-4 text-zinc-100">
+            <EditorContent editor={editor} />
+          </div>
+        </ScrollArea>
+      ) : (
+        // full — без ScrollArea, батько сам керує скролом
         <div className="p-4 text-zinc-100">
           <EditorContent editor={editor} />
         </div>
-      </ScrollArea>
+      )}
     </div>
   );
 };
