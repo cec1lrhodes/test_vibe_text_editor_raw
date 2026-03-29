@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { JSONContent } from "@tiptap/react";
 import { RichTextEditor } from "../TextEditor/RichTextEditor";
 import { useCardStore } from "@/store/useCardStore";
+import { compressImage } from "../utils/compressImage";
 
 export const InputBar = () => {
   const addCard = useCardStore((s) => s.addCard);
@@ -35,12 +36,16 @@ export const InputBar = () => {
     }
   }, [editingId]);
 
-  const handleBgImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBgImageSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      setBgImage(ev.target?.result as string);
+    reader.onload = async (ev) => {
+      const raw = ev.target?.result as string;
+      const compressed = await compressImage(raw);
+      setBgImage(compressed);
     };
     reader.readAsDataURL(file);
   };

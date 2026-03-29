@@ -6,6 +6,7 @@ import { Placeholder } from "@tiptap/extension-placeholder";
 import type { JSONContent } from "@tiptap/react";
 import { EditorToolbar } from "@/components/ToolBar/EditorToolbar";
 import "./RichTextEditor.css";
+import { compressImage } from "../utils/compressImage";
 
 interface RichTextEditorProps {
   placeholder?: string;
@@ -54,9 +55,10 @@ export const RichTextEditor = ({
       if (!file || !editor) return;
 
       const reader = new FileReader();
-      reader.onload = (readerEvent) => {
+      reader.onload = async (readerEvent) => {
         const src = readerEvent.target?.result as string;
-        (editor as any).chain().focus().setImage({ src }).run();
+        const compressed = await compressImage(src, 800, 0.6);
+        (editor as any).chain().focus().setImage({ src: compressed }).run();
       };
       reader.readAsDataURL(file);
     };
