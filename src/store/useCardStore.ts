@@ -4,17 +4,14 @@ import type { JSONContent } from "@tiptap/react";
 import type { Card, CardId, CardState } from "../components/Types/typeTiptap";
 
 interface CardStore {
-  //  Дані карток
   cards: Card[];
-  isPublished: boolean;
-  publishedTitle?: string;
   addCard: (
     content: JSONContent,
     plainText: string,
     backgroundImage?: string,
   ) => void;
   deleteCard: (id: CardId) => void;
-  updateCard: (id: CardId, content: JSONContent, plainText: string) => void;
+  updateCard: (id: CardId, content: JSONContent, plainText: string, backgroundImage?: string) => void;
 
   editingId: CardId | null;
   startEditing: (id: CardId) => void;
@@ -32,8 +29,6 @@ interface CardStore {
 export const useCardStore = create<CardStore>()(
   persist(
     (set, get) => ({
-      isPublished: false,
-
       cards: [],
       editingId: null,
       uiStates: {},
@@ -60,10 +55,10 @@ export const useCardStore = create<CardStore>()(
         }));
       },
 
-      updateCard: (id, content, plainText) => {
+      updateCard: (id, content, plainText, backgroundImage) => {
         set((state) => ({
           cards: state.cards.map((c) =>
-            c.id === id ? { ...c, content, plainText } : c,
+            c.id === id ? { ...c, content, plainText, backgroundImage } : c,
           ),
         }));
       },

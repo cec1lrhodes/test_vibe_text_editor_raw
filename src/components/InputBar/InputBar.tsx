@@ -28,13 +28,12 @@ export const InputBar = () => {
   };
 
   useEffect(() => {
-    if (editingCard) {
-      setJson(editingCard.content);
-      setPlainText(editingCard.plainText);
-      setBgImage(editingCard.backgroundImage);
-      setEditorKey((k) => k + 1); // перемонтуємо редактор з новим контентом
-    }
-  }, [editingId]);
+    if (!editingCard) return
+    setJson(editingCard.content)
+    setPlainText(editingCard.plainText)
+    setBgImage(editingCard.backgroundImage)
+    setEditorKey((k) => k + 1)
+  }, [editingId, editingCard])
 
   const handleBgImageSelect = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -59,13 +58,7 @@ export const InputBar = () => {
     if (!json || isEmpty) return;
 
     if (editingId) {
-      updateCard(editingId, json, plainText);
-      // Оновлюємо фонове фото окремо
-      useCardStore.setState((s) => ({
-        cards: s.cards.map((c) =>
-          c.id === editingId ? { ...c, backgroundImage: bgImage } : c,
-        ),
-      }));
+      updateCard(editingId, json, plainText, bgImage);
       stopEditing();
     } else {
       addCard(json, plainText, bgImage);

@@ -1,4 +1,5 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react"
+import { useRef } from "react"
 import { StarterKit } from "@tiptap/starter-kit";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Image } from "@tiptap/extension-image";
@@ -19,6 +20,8 @@ export const RichTextEditor = ({
   onChange,
   initialContent,
 }: RichTextEditorProps) => {
+  const imageInputRef = useRef<HTMLInputElement>(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -47,28 +50,34 @@ export const RichTextEditor = ({
   });
 
   const handleImageInsert = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file || !editor) return;
+    imageInputRef.current?.click()
+  }
 
-      const reader = new FileReader();
-      reader.onload = async (readerEvent) => {
-        const src = readerEvent.target?.result as string;
-        const compressed = await compressImage(src, 800, 0.6);
-        (editor as any).chain().focus().setImage({ src: compressed }).run();
-      };
-      reader.readAsDataURL(file);
-    };
-    input.click();
-  };
+  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !editor) return
+
+    const reader = new FileReader()
+    reader.onload = async (readerEvent) => {
+      const src = readerEvent.target?.result as string
+      const compressed = await compressImage(src, 800, 0.6)
+      ;(editor as any).chain().focus().setImage({ src: compressed }).run()
+    }
+    reader.readAsDataURL(file)
+    e.target.value = ""
+  }
 
   return (
     <div className="rich-editor-wrapper">
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleImageFileChange}
+      />
       <EditorToolbar editor={editor} onImageInsert={handleImageInsert} />
       <EditorContent editor={editor} className="rich-editor-content" />
     </div>
-  );
-};
+  )
+}

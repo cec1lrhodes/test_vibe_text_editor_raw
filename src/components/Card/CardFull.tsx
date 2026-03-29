@@ -11,7 +11,7 @@ interface CardFullProps {
 
 export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
   return (
-    <div className="fixed inset-[5%] z-50 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col shadow-2xl h-full">
+    <>
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/80 z-40 backdrop-blur-sm"
@@ -19,12 +19,7 @@ export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
       />
       {/* Full картка */}
       <div className="fixed inset-[5%] z-50 bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col shadow-2xl">
-        <CardActions
-          onDelete={onDelete}
-          onEdit={() => {}}
-          onPublish={() => {}}
-          isPublished={false}
-        />
+        <CardActions onDelete={onDelete} />
 
         <ScrollArea className="flex-1 min-h-0">
           <CardExpandedContent card={card} variant="full" />
@@ -39,6 +34,6 @@ export const CardFull = ({ onClose, onDelete, card }: CardFullProps) => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };

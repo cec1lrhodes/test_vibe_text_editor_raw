@@ -12,9 +12,4 @@ export interface Card {
   publishedTitle?: string;
 }
 
-export type CardState = "collapsed" | "expanded" | "full";
-
-export interface CardUIState {
-  id: CardId;
-  state: CardState;
-}
+export type CardState = "collapsed" | "expanded" | "full"

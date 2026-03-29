@@ -5,6 +5,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { Image } from "@tiptap/extension-image";
 import type { Card } from "../Types/typeTiptap";
 import { ScrollArea } from "../ui/scroll-area";
+import { useEffect } from "react";
 
 interface CardExpandedProps {
   card: Card;
@@ -26,14 +27,20 @@ export const CardExpandedContent = ({
     editable: false,
   });
 
-  const scrollHeight =
-    variant === "full"
-      ? card.backgroundImage
-        ? "calc(100vh - 10% - 140px - 60px)" // vh - inset - фото - footer
-        : "calc(100vh - 10% - 60px)" // vh - inset - footer
-      : card.backgroundImage
-      ? "180px"
-      : "320px";
+  // const scrollHeight =
+  //   variant === "full"
+  //     ? card.backgroundImage
+  //       ? "calc(100vh - 10% - 140px - 60px)" // vh - inset - фото - footer
+  //       : "calc(100vh - 10% - 60px)" // vh - inset - footer
+  //     : card.backgroundImage
+  //     ? "180px"
+  //     : "320px";
+
+  useEffect(() => {
+    // При зміні card.content, оновлюємо editor
+    if (!editor) return;
+    editor.commands.setContent(card.content);
+  }, [card.content, editor]);
 
   return (
     <div className="flex flex-col w-full">

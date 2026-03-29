@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useCardStore } from "@/store/useCardStore";
 import { ArticleMain } from "@/components/Article/ArticleMain";
 
-const ArticlePage = () => {
+export const ArticlePage = () => {
   const cards = useCardStore((s) => s.cards);
   const published = cards.filter((c) => c.isPublished);
 
@@ -43,4 +43,3 @@ const ArticlePage = () => {
   );
 };
 
-export default ArticlePage;

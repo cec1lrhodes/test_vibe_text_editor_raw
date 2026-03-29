@@ -15,10 +15,11 @@ export const NotionCard = ({ card }: NotionCardProps) => {
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
   const publishCard = useCardStore((s) => s.publishCard);
   const unpublishCard = useCardStore((s) => s.unpublishCard);
-  const { setCardState, getCardState, deleteCard } = useCardStore();
-  const state = getCardState(card.id);
-
+  const setCardState = useCardStore((s) => s.setCardState);
+  const deleteCard = useCardStore((s) => s.deleteCard);
   const startEditing = useCardStore((s) => s.startEditing);
+  const state = useCardStore((s) => s.uiStates[card.id] ?? "collapsed");
+
   // Закриваємо full view по Esc
   useEffect(() => {
     if (state !== "full") return;
