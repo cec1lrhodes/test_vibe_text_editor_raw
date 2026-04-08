@@ -1,17 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import type { JSONContent } from "@tiptap/react";
-import { RichTextEditor } from "../TextEditor/RichTextEditor";
-import { useCardStore } from "@/store/useCardStore";
-import { compressImage } from "../utils/compressImage";
+import { useEffect, useRef, useState } from "react"
+import type { JSONContent } from "@tiptap/react"
+import { RichTextEditor } from "../TextEditor/RichTextEditor"
+import { useCardStore } from "@/store/useCardStore"
+import { useCardsQuery, useAddCard, useUpdateCard } from "@/hooks/useCards"
+import { compressImage } from "../utils/compressImage"
 
 export const InputBar = () => {
-  const addCard = useCardStore((s) => s.addCard);
-  const updateCard = useCardStore((s) => s.updateCard);
-  const editingId = useCardStore((s) => s.editingId);
-  const stopEditing = useCardStore((s) => s.stopEditing);
-  const cards = useCardStore((s) => s.cards);
+  const { mutate: addCard } = useAddCard()
+  const { mutate: updateCard } = useUpdateCard()
+  const { data: cards = [] } = useCardsQuery()
+  const editingId = useCardStore((s) => s.editingId)
+  const stopEditing = useCardStore((s) => s.stopEditing)
 
-  const editingCard = editingId ? cards.find((c) => c.id === editingId) : null;
+  const editingCard = editingId ? cards.find((c) => c.id === editingId) : null
 
   const [json, setJson] = useState<JSONContent | null>(null);
   const [plainText, setPlainText] = useState("");
@@ -58,10 +59,10 @@ export const InputBar = () => {
     if (!json || isEmpty) return;
 
     if (editingId) {
-      updateCard(editingId, json, plainText, bgImage);
-      stopEditing();
+      updateCard({ id: editingId, content: json, plainText, backgroundImage: bgImage })
+      stopEditing()
     } else {
-      addCard(json, plainText, bgImage);
+      addCard({ content: json, plainText, backgroundImage: bgImage })
     }
 
     setJson(null);

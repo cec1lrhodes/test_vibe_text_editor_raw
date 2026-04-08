@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import type { Card } from "../Types/typeTiptap";
 import { useCardStore } from "@/store/useCardStore";
+import {
+  useDeleteCard,
+  usePublishCard,
+  useUnpublishCard,
+} from "@/hooks/useCards";
 import { CardActions } from "./CardActions";
 import { CardCollapsed } from "./CardCollapsed";
 import { CardExpandedContent } from "./CardExpanded";
@@ -13,10 +18,10 @@ interface NotionCardProps {
 
 export const NotionCard = ({ card }: NotionCardProps) => {
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
-  const publishCard = useCardStore((s) => s.publishCard);
-  const unpublishCard = useCardStore((s) => s.unpublishCard);
+  const { mutate: publishCard } = usePublishCard();
+  const { mutate: unpublishCard } = useUnpublishCard();
+  const { mutate: deleteCard } = useDeleteCard();
   const setCardState = useCardStore((s) => s.setCardState);
-  const deleteCard = useCardStore((s) => s.deleteCard);
   const startEditing = useCardStore((s) => s.startEditing);
   const state = useCardStore((s) => s.uiStates[card.id] ?? "collapsed");
 
@@ -57,7 +62,8 @@ export const NotionCard = ({ card }: NotionCardProps) => {
   }
 
   const handlePublish = (title: string) => {
-    publishCard(card.id, title);
+    publishCard({ id: card.id, title });
+    setPublishDialogOpen(false);
   };
 
   const handlePublishClick = () => {

@@ -1,8 +1,20 @@
-import { useCardStore } from "@/store/useCardStore";
+import { useCardsQuery } from "@/hooks/useCards";
 import { NotionCard } from "./NotionCard";
 
 export const CardsGrid = () => {
-  const cards = useCardStore((s) => s.cards);
+  const { data: cards = [], isLoading, isError } = useCardsQuery();
+
+  if (isLoading) {
+    return <p className="text-zinc-600 text-sm text-center mt-4">Loading...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-red-500 text-sm text-center mt-4">
+        Failed to load cards. Is the server running?
+      </p>
+    );
+  }
 
   if (cards.length === 0) {
     return (

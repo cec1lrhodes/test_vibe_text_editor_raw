@@ -1,10 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { useCardStore } from "@/store/useCardStore";
-import { ArticleMain } from "@/components/Article/ArticleMain";
+import { Link } from "@tanstack/react-router"
+import { useArticlesQuery } from "@/hooks/useCards"
+import { ArticleMain } from "@/components/Article/ArticleMain"
 
 export const ArticlePage = () => {
-  const cards = useCardStore((s) => s.cards);
-  const published = cards.filter((c) => c.isPublished);
+  const { data: published = [], isLoading, isError } = useArticlesQuery()
 
   return (
     <div className="min-h-screen bg-zinc-950 py-16 px-4">
@@ -21,7 +20,13 @@ export const ArticlePage = () => {
         </div>
 
         {/* Список статей */}
-        {published.length === 0 ? (
+        {isLoading ? (
+          <p className="text-zinc-600 text-sm text-center py-20">Loading...</p>
+        ) : isError ? (
+          <p className="text-red-500 text-sm text-center py-20">
+            Failed to load articles. Is the server running?
+          </p>
+        ) : published.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-zinc-600 text-sm">No articles published yet.</p>
             <Link
@@ -40,6 +45,6 @@ export const ArticlePage = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
