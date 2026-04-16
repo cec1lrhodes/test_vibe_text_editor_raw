@@ -1,7 +1,7 @@
 import type { Card } from "@/components/Types/typeTiptap";
 import type { JSONContent } from "@tiptap/react";
 
-const BASE = "http://localhost:3001/api";
+const BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:3001") + "/api";
 
 const handleResponse = async <T>(res: Response): Promise<T> => {
   if (!res.ok) {
