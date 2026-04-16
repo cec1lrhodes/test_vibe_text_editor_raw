@@ -10,7 +10,23 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
   : ["http://localhost:5173"]
 
-app.use(cors({ origin: ALLOWED_ORIGINS }))
+const isOriginAllowed = (origin: string): boolean => {
+  if (ALLOWED_ORIGINS.includes(origin)) return true
+  if (/^https:\/\/.*\.vercel\.app$/.test(origin)) return true
+  return false
+}
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || isOriginAllowed(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`))
+      }
+    },
+  }),
+)
 app.use(express.json({ limit: "10mb" }))
 
 app.use("/api/cards", cardsRouter)
